@@ -22,13 +22,12 @@ class PFA:
         acceptance_probability = self.initial_state
         for letter in word:
             transition_matrix = self.transition_matrices[self.alphabet.index(letter)]
-            print(transition_matrix)
             acceptance_probability = acceptance_probability @ transition_matrix
         acceptance_probability = acceptance_probability @ self.acceptance_vector
         return acceptance_probability
 
 
-def main():
+def dfa_example():
     alphabet = 'ab'
     # three states
     # symbol_matrix[i][j] - probability of going from state i to state j when reading symbol
@@ -39,8 +38,30 @@ def main():
     acceptance_vector = np.array([[0], [0], [1]])
 
     pfa = PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
-    res = pfa.process('aa')
-    print(res)
+    res_aa = pfa.process('aa')
+    res_ab = pfa.process('ab')
+    print('aa: ', res_aa, "\tab: ", res_ab)
+
+
+def pfa_example():
+    alphabet = 'ab'
+    # three states
+    # symbol_matrix[i][j] - probability of going from state i to state j when reading symbol
+    a_matrix = np.array([[0, 0.5, 0.5], [0, 1, 0], [0, 0, 1]])
+    b_matrix = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+    transition_matrices = [a_matrix, b_matrix]
+    initial_state = np.array([[1, 0, 0]])
+    acceptance_vector = np.array([[0], [0], [1]])
+
+    pfa = PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
+    res_aa = pfa.process('aa')
+    res_ab = pfa.process('ab')
+    print('aa: ', res_aa, "\tab: ", res_ab)
+
+
+def main():
+    dfa_example()
+    pfa_example()
 
 
 if __name__ == "__main__":
