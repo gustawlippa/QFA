@@ -2,6 +2,7 @@ import numpy as np
 from typing import List
 from math import sqrt
 
+
 class MO_1QFA:
 
     def __init__(self, alphabet: str,
