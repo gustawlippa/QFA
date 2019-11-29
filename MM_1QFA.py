@@ -68,7 +68,7 @@ class MM_1QFA:
         return total_state[1]
 
 
-def mm_1qfa_example():
+def example():
     alphabet = 'a'
 
     a_matrix = np.array([[1 / 2, 1/2, 0, 0],
@@ -99,10 +99,10 @@ def mm_1qfa_example():
                                 [0, 0, 0, 0]])
 
     qfa = MM_1QFA(alphabet, initial_state, [a_matrix, end_matrix], measurement_acc, measurement_rej, measurement_non)
-
     # as I understand, it should return 1/2 as it does
-    res = qfa.process('a')
-    print('a\t', res)
+    # res = qfa.process('a')
+    # print('a\t', res)
     # example from QFA paper - returns 0.9785533905932737, which is 5/8+1/(2sqrt(2)) as in the paper
-    res = qfa.process('aa')
-    print('aa\t', res)
+    # res = qfa.process('aa')
+    # print('aa\t', res)
+    return qfa

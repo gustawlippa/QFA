@@ -25,6 +25,7 @@ class PFA:
             transition_matrix = self.transition_matrices[self.alphabet.index(letter)]
             acceptance_probability = acceptance_probability @ transition_matrix
         acceptance_probability = acceptance_probability @ self.acceptance_vector
+        acceptance_probability = acceptance_probability[0][0]
         return acceptance_probability
 
 
@@ -39,9 +40,10 @@ def dfa_example():
     acceptance_vector = np.array([[0], [0], [1]])
 
     pfa = PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
-    res_aa = pfa.process('aa')
-    res_ab = pfa.process('ab')
-    print('aa: ', res_aa, "\tab: ", res_ab)
+    # res_aa = pfa.process('aa')
+    # res_ab = pfa.process('ab')
+    # print('aa: ', res_aa, "\tab: ", res_ab)
+    return pfa
 
 
 def pfa_example():
@@ -55,6 +57,7 @@ def pfa_example():
     acceptance_vector = np.array([[0], [0], [1]])
 
     pfa = PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
-    res_aa = pfa.process('aa')
-    res_ab = pfa.process('ab')
-    print('aa: ', res_aa, "\tab: ", res_ab)
+    # res_aa = pfa.process('aa')
+    # res_ab = pfa.process('ab')
+    # print('aa: ', res_aa, "\tab: ", res_ab)
+    return pfa
