@@ -3,14 +3,19 @@ from typing import List
 from math import sqrt
 
 
-class MM_1QFA:
+def get_complementary_matrix(list_of_matrices):
+    size = list_of_matrices[0].shape[0]
+    diag = np.eye(size)
+    s = sum(list_of_matrices)
+    return diag - s
+
+
+class GQFA:
 
     def __init__(self, alphabet: str,
                  initial_state: np.ndarray,
                  transition_matrices: List[np.ndarray],
-                 projective_measurement_accept: np.ndarray,
-                 projective_measurement_reject: np.ndarray,
-                 projective_measurement_non: np.ndarray
+                 projective_measurements: List[List[np.ndarray]]
                  ):
         # list of chars
         self.alphabet = alphabet
@@ -18,12 +23,14 @@ class MM_1QFA:
         self.initial_state = initial_state
         # list of np matrices - position in list corresponds to position of letter in alphabet,
         # perhaps a map could be better
-        # watch out in MM_1QFA - there needs to be a transition matrix for the end symbol
+        # watch out in GQFA - there needs to be a transition matrix for the end symbol
         self.transition_matrices = transition_matrices
-        # np matrix containing ones and zeroes
-        self.projective_measurement_accept = projective_measurement_accept
-        self.projective_measurement_reject = projective_measurement_reject
-        self.projective_measurement_non = projective_measurement_non
+        # list of lists of 2 np matrices containing ones and zeroes
+        # first one should be accepting
+        # second one should be rejecting
+        # similarly as the list of transition matrices
+        self.projective_measurements = [pair_of_matrices + [get_complementary_matrix(pair_of_matrices)]
+                                        for pair_of_matrices in projective_measurements]
 
     def process(self, word: str):
 
@@ -32,16 +39,21 @@ class MM_1QFA:
         for letter in word:
             # print("Letter:\t", letter, ", state before:\t", total_state)
             transition_matrix = self.transition_matrices[self.alphabet.index(letter)]
+            projective_measurements = self.projective_measurements[self.alphabet.index(letter)]
+            projective_measurement_accept = projective_measurements[0]
+            projective_measurement_reject = projective_measurements[1]
+            projective_measurement_non = projective_measurements[2]
+
             state = total_state[0]
 
-            continue_probability = self.projective_measurement_non @ transition_matrix @ state
+            continue_probability = projective_measurement_non @ transition_matrix @ state
 
             acceptance_probability = total_state[1]
-            v = self.projective_measurement_accept @ transition_matrix @ state
+            v = projective_measurement_accept @ transition_matrix @ state
             acceptance_probability += np.vdot(v, v)
 
             rejection_probability = total_state[2]
-            v = self.projective_measurement_reject @ transition_matrix @ state
+            v = projective_measurement_reject @ transition_matrix @ state
             rejection_probability += np.vdot(v, v)
 
             total_state = (continue_probability, acceptance_probability, rejection_probability)
@@ -50,15 +62,19 @@ class MM_1QFA:
         # print("End sign:\t$, state:\t", total_state)
         transition_matrix = self.transition_matrices[-1]
         state = total_state[0]
+        projective_measurements = self.projective_measurements[-1]
+        projective_measurement_accept = projective_measurements[0]
+        projective_measurement_reject = projective_measurements[1]
+        projective_measurement_non = projective_measurements[2]
 
-        continue_probability = self.projective_measurement_non @ transition_matrix @ state
+        continue_probability = projective_measurement_non @ transition_matrix @ state
 
         acceptance_probability = total_state[1]
-        v = self.projective_measurement_accept @ transition_matrix @ state
+        v = projective_measurement_accept @ transition_matrix @ state
         acceptance_probability += np.vdot(v, v)
 
         rejection_probability = total_state[2]
-        v = self.projective_measurement_reject @ transition_matrix @ state
+        v = projective_measurement_reject @ transition_matrix @ state
         rejection_probability += np.vdot(v, v)
 
         total_state = (continue_probability, acceptance_probability, rejection_probability)
@@ -93,18 +109,15 @@ def example():
                                 [0, 0, 0, 0],
                                 [0, 0, 0, 1]])
 
-    measurement_non = np.array([[1, 0, 0, 0],
-                                [0, 1, 0, 0],
-                                [0, 0, 0, 0],
-                                [0, 0, 0, 0]])
+    # this example is equivalent to MM_1QFA
+    measurements = [[measurement_acc, measurement_rej], [measurement_acc, measurement_rej]]
 
-    qfa = MM_1QFA(alphabet, initial_state, [a_matrix, end_matrix], measurement_acc, measurement_rej, measurement_non)
+    gqfa = GQFA(alphabet, initial_state, [a_matrix, end_matrix], measurements)
 
-    # print('MM_1QFA example:')
-    # as I understand, it should return 1/2 as it does
-    # res = qfa.process('a')
+    # print('GQFA example:')
+    # res = gqfa.process('a')
     # print('a\t', res)
-    # example from QFA paper - returns 0.9785533905932737, which is 5/8+1/(2sqrt(2)) as in the paper
-    # res = qfa.process('aa')
+    # res = gqfa.process('aa')
     # print('aa\t', res)
-    return qfa
+
+    return gqfa

@@ -59,5 +59,6 @@ def pfa_example():
     pfa = PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
     # res_aa = pfa.process('aa')
     # res_ab = pfa.process('ab')
+    # print('PFA example:')
     # print('aa: ', res_aa, "\tab: ", res_ab)
     return pfa
