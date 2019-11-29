@@ -99,6 +99,8 @@ def example():
                                 [0, 0, 0, 0]])
 
     qfa = MM_1QFA(alphabet, initial_state, [a_matrix, end_matrix], measurement_acc, measurement_rej, measurement_non)
+
+    # print('MM_1QFA example:')
     # as I understand, it should return 1/2 as it does
     # res = qfa.process('a')
     # print('a\t', res)

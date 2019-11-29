@@ -34,6 +34,7 @@ class MO_1QFA:
 
         return acceptance_probability
 
+
 def mo_1qfa_example():
     alphabet = 'a'
 
@@ -43,12 +44,14 @@ def mo_1qfa_example():
 
     qfa = MO_1QFA(alphabet, initial_state, [a_matrix], measurement)
 
+    # print('MO_1QFA example:')
+    # print('mo_qfa1')
     # as I understand, it should return 1/2 as it does
     res = qfa.process('a')
-    print('a\t', res)
+    # print('a\t', res)
     # example from QFA paper - returns 0 as should
     res = qfa.process('aa')
-    print('aa\t', res)
+    # print('aa\t', res)
 
     # example from wikipedia: (https://en.wikipedia.org/wiki/Quantum_finite_automata#Measure-once_automata)
 
@@ -61,7 +64,7 @@ def mo_1qfa_example():
 
     qfa2 = MO_1QFA(alphabet, initial_state, [zero_matrix, one_matrix], projection_matrix)
     # should behave as DFA expecting words with even number of '0's
-    print('qfa2')
+    print('mo_qfa2')
     print('111\t', qfa2.process('111'))
     print('101\t', qfa2.process('101'))
     print('001\t', qfa2.process('001'))
@@ -74,7 +77,7 @@ def mo_1qfa_example():
     qfa3 = MO_1QFA(alphabet, initial_state, [zero_matrix, one_matrix], projection_matrix)
     # should behave somehow
     # one must remember that initial state must be a quantum state, so it must comply with normalisation condition
-    print('qfa3')
+    print('mo_qfa3')
     print('111\t', qfa3.process('111'))
     print('101\t', qfa3.process('101'))
     print('001\t', qfa3.process('001'))
