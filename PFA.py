@@ -26,7 +26,7 @@ class PFA:
             acceptance_probability = acceptance_probability @ transition_matrix
         acceptance_probability = acceptance_probability @ self.acceptance_vector
         acceptance_probability = acceptance_probability[0][0]
-        return acceptance_probability
+        return acceptance_probability, 0
 
 
 def dfa_example():
