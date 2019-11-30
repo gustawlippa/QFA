@@ -10,6 +10,34 @@ def get_complementary_matrix(list_of_matrices):
     return diag - s
 
 
+def get_projective_measurements(list_of_matrices):
+    # check input format
+    if len(list_of_matrices[0]) == 3:
+        # acc, rej and non matrices are provided
+        for i, measurement in enumerate(list_of_matrices):
+            size = measurement[0].shape[0]
+            s = sum(measurement)
+            if not np.array_equal(s, np.eye(size)):
+                print(s, np.eye(size))
+                raise Exception('Wrong ', i, 'th measurement')
+        return list_of_matrices
+    elif len(list_of_matrices[0]) == 2:
+        # we have to calculate non halting matrix
+        return [pair_of_matrices + [get_complementary_matrix(pair_of_matrices)] for pair_of_matrices in list_of_matrices]
+
+
+def is_unitary(m):
+    return np.allclose(np.eye(m.shape[0]), np.conjugate(m).T @ m)
+
+
+def check_transition_matrices(matrices):
+    if all([is_unitary(m) for m in matrices]):
+        return matrices
+    else:
+        print([is_unitary(m) for m in matrices])
+        raise Exception('Transition matrix is not unitary')
+
+
 class GQFA:
 
     def __init__(self, alphabet: str,
@@ -24,13 +52,12 @@ class GQFA:
         # list of np matrices - position in list corresponds to position of letter in alphabet,
         # perhaps a map could be better
         # watch out in GQFA - there needs to be a transition matrix for the end symbol
-        self.transition_matrices = transition_matrices
+        self.transition_matrices = check_transition_matrices(transition_matrices)
         # list of lists of 2 np matrices containing ones and zeroes
         # first one should be accepting
         # second one should be rejecting
         # similarly as the list of transition matrices
-        self.projective_measurements = [pair_of_matrices + [get_complementary_matrix(pair_of_matrices)]
-                                        for pair_of_matrices in projective_measurements]
+        self.projective_measurements = get_projective_measurements(projective_measurements)
 
     def process(self, word: str):
 
@@ -87,10 +114,10 @@ class GQFA:
 def example():
     alphabet = 'a'
 
-    a_matrix = np.array([[1 / 2, 1/2, 0, 0],
-                         [sqrt(1 / 2), -sqrt(1/2), (1 / 2), -sqrt(1/2)],
-                         [(1 / 2), 1/2, 0, 0],
-                         [0, 0, -sqrt(1/2), sqrt(1/2)]])
+    a_matrix = np.array([[1/2,         1/2,        sqrt(1/2),  0],
+                         [sqrt(1 / 2), -sqrt(1/2), 0,          0],
+                         [1/2,         1/2,        -sqrt(1/2), 0],
+                         [0,           0,          0,          1]])
 
     end_matrix = np.array([[0, 0, 0, 1],
                            [0, 0, 1, 0],

@@ -2,6 +2,8 @@ import numpy as np
 from typing import List
 from math import sqrt
 
+from QFA.GQFA import get_complementary_matrix, check_transition_matrices
+
 
 class MM_1QFA:
 
@@ -10,7 +12,7 @@ class MM_1QFA:
                  transition_matrices: List[np.ndarray],
                  projective_measurement_accept: np.ndarray,
                  projective_measurement_reject: np.ndarray,
-                 projective_measurement_non: np.ndarray
+                 projective_measurement_non: np.ndarray = None
                  ):
         # list of chars
         self.alphabet = alphabet
@@ -19,11 +21,15 @@ class MM_1QFA:
         # list of np matrices - position in list corresponds to position of letter in alphabet,
         # perhaps a map could be better
         # watch out in MM_1QFA - there needs to be a transition matrix for the end symbol
-        self.transition_matrices = transition_matrices
+        self.transition_matrices = check_transition_matrices(transition_matrices)
         # np matrix containing ones and zeroes
         self.projective_measurement_accept = projective_measurement_accept
         self.projective_measurement_reject = projective_measurement_reject
-        self.projective_measurement_non = projective_measurement_non
+        if projective_measurement_non is not None:
+            self.projective_measurement_non = projective_measurement_non
+        else:
+            self.projective_measurement_non = get_complementary_matrix([projective_measurement_accept,
+                                                                        projective_measurement_reject])
 
     def process(self, word: str):
 
@@ -72,10 +78,10 @@ class MM_1QFA:
 def example():
     alphabet = 'a'
 
-    a_matrix = np.array([[1 / 2, 1/2, 0, 0],
-                         [sqrt(1 / 2), -sqrt(1/2), (1 / 2), -sqrt(1/2)],
-                         [(1 / 2), 1/2, 0, 0],
-                         [0, 0, -sqrt(1/2), sqrt(1/2)]])
+    a_matrix = np.array([[1 / 2, 1 / 2, sqrt(1 / 2), 0],
+                         [sqrt(1 / 2), -sqrt(1 / 2), 0, 0],
+                         [1 / 2, 1 / 2, -sqrt(1 / 2), 0],
+                         [0, 0, 0, 1]])
 
     end_matrix = np.array([[0, 0, 0, 1],
                            [0, 0, 1, 0],
