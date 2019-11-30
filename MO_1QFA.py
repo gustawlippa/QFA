@@ -32,7 +32,7 @@ class MO_1QFA:
 
         acceptance_probability = np.vdot(acceptance_probability, acceptance_probability) # vdot(a,a) = norm squared (a)
 
-        return acceptance_probability
+        return acceptance_probability, 0
 
 
 def mo_1qfa_example():
