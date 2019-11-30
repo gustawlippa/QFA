@@ -2,23 +2,22 @@ from QFA import LanguageChecker as Checker, GQFA, MM_1QFA as MM, PFA as PFA
 
 
 def main():
-    dfa = PFA.dfa_example()
-    pfa = PFA.pfa_example()
-    # MO.mo_1qfa_example()
+    pfa = PFA.example()
+    # MO.example()
     mm_1qfa = MM.example()
     gqfa = GQFA.example()
 
     mm_checker = Checker.LanguageChecker(mm_1qfa, ["aa"], ["a"])
     mm_checker.check_language()
-    print(mm_checker.accepted)
+    print('MM-1QFA', mm_checker.accepted)
 
     pfa_checker = Checker.LanguageChecker(pfa, ["aa"], ["ab"])
     pfa_checker.check_language()
-    print(pfa_checker.accepted)
+    print('PFA', pfa_checker.accepted)
 
     gqfa_checker = Checker.LanguageChecker(gqfa, ["aa"], ["a"])
     gqfa_checker.check_language()
-    print(gqfa_checker.accepted)
+    print('GQFA', gqfa_checker.accepted)
 
 
 if __name__ == "__main__":

@@ -114,10 +114,14 @@ def example():
 
     gqfa = GQFA(alphabet, initial_state, [a_matrix, end_matrix], measurements)
 
-    # print('GQFA example:')
-    # res = gqfa.process('a')
-    # print('a\t', res)
-    # res = gqfa.process('aa')
-    # print('aa\t', res)
+    print('GQFA example:')
+    res = gqfa.process('a')
+    print('a\t', res)
+    res = gqfa.process('aa')
+    print('aa\t', res)
 
     return gqfa
+
+
+if __name__ == "__main__":
+    example()

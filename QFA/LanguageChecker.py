@@ -78,7 +78,6 @@ class LanguageChecker:
         else:
             return cutpoint, epsilon, error
 
-
     def check_monte_carlo(self):
         for word in self.language:
             p_for_word, err = self.automata.process(word)

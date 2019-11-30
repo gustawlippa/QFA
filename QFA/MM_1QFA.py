@@ -101,11 +101,15 @@ def example():
 
     qfa = MM_1QFA(alphabet, initial_state, [a_matrix, end_matrix], measurement_acc, measurement_rej, measurement_non)
 
-    # print('MM_1QFA example:')
-    # as I understand, it should return 1/2 as it does
-    # res = qfa.process('a')
-    # print('a\t', res)
+    print('MM_1QFA example:')
+    # it should return 1/2
+    res = qfa.process('a')
+    print('a\t', res)
     # example from QFA paper - returns 0.9785533905932737, which is 5/8+1/(2sqrt(2)) as in the paper
-    # res = qfa.process('aa')
-    # print('aa\t', res)
+    res = qfa.process('aa')
+    print('aa\t', res)
     return qfa
+
+
+if __name__ == "__main__":
+    example()
