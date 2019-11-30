@@ -30,7 +30,7 @@ class MO_1QFA:
 
         acceptance_probability = self.projective_measurement @ acceptance_probability
 
-        acceptance_probability = np.vdot(acceptance_probability, acceptance_probability) # vdot(a,a) = norm squared (a)
+        acceptance_probability = np.vdot(acceptance_probability, acceptance_probability)  # vdot(a,a) = norm squared (a)
 
         return acceptance_probability, 0
 

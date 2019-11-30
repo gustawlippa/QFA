@@ -1,8 +1,4 @@
-import PFA as PFA
-import MO_1QFA as MO
-import MM_1QFA as MM
-import GQFA
-import LanguageChecker as Checker
+from QFA import LanguageChecker as Checker, GQFA, MM_1QFA as MM, PFA as PFA
 
 
 def main():
