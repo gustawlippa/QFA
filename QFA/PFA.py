@@ -29,6 +29,12 @@ class PFA:
         return acceptance_probability, 0
 
 
+def example():
+    dfa_example()
+    res = pfa_example()
+    return res
+
+
 def dfa_example():
     alphabet = 'ab'
     # three states
@@ -40,9 +46,10 @@ def dfa_example():
     acceptance_vector = np.array([[0], [0], [1]])
 
     pfa = PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
-    # res_aa = pfa.process('aa')
-    # res_ab = pfa.process('ab')
-    # print('aa: ', res_aa, "\tab: ", res_ab)
+    res_aa = pfa.process('aa')
+    res_ab = pfa.process('ab')
+    print('DFA example:')
+    print('aa: ', res_aa, "\tab: ", res_ab)
     return pfa
 
 
@@ -57,8 +64,12 @@ def pfa_example():
     acceptance_vector = np.array([[0], [0], [1]])
 
     pfa = PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
-    # res_aa = pfa.process('aa')
-    # res_ab = pfa.process('ab')
-    # print('PFA example:')
-    # print('aa: ', res_aa, "\tab: ", res_ab)
+    res_aa = pfa.process('aa')
+    res_ab = pfa.process('ab')
+    print('PFA example:')
+    print('aa: ', res_aa, "\tab: ", res_ab)
     return pfa
+
+
+if __name__ == "__main__":
+    example()
