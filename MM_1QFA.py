@@ -64,8 +64,9 @@ class MM_1QFA:
         total_state = (continue_probability, acceptance_probability, rejection_probability)
 
         # print("End state:\t", total_state)
+        error = abs(1 - acceptance_probability - rejection_probability)
 
-        return total_state[1]
+        return total_state[1], error
 
 
 def example():

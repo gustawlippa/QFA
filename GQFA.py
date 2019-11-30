@@ -80,8 +80,8 @@ class GQFA:
         total_state = (continue_probability, acceptance_probability, rejection_probability)
 
         # print("End state:\t", total_state)
-
-        return total_state[1]
+        error = abs(1 - acceptance_probability - rejection_probability)
+        return total_state[1], error
 
 
 def example():

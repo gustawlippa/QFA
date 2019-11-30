@@ -16,8 +16,8 @@ class LanguageChecker:
 
         result = self.check_isolated_cutpoint()
         if result:
-            isolated_cutpoint, epsilon = result
-            self.accepted.append(("isolated_cutpoint", isolated_cutpoint, epsilon))
+            isolated_cutpoint, epsilon, error = result
+            self.accepted.append(("isolated_cutpoint", isolated_cutpoint, epsilon, error))
 
         monte_carlo_eps = self.check_monte_carlo()
         if monte_carlo_eps:
@@ -39,12 +39,12 @@ class LanguageChecker:
         cutpoint = 1
 
         for word in self.language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err_for_word = self.automata.process(word)
             if p_for_word < cutpoint:
                 cutpoint = p_for_word
 
         for word in self.not_in_language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err_for_word = self.automata.process(word)
             if p_for_word > cutpoint:
                 return False
 
@@ -52,34 +52,40 @@ class LanguageChecker:
 
     def check_isolated_cutpoint(self):
         cutpoint_l = 1
+        err = None
 
         for word in self.language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err_for_word = self.automata.process(word)
             if p_for_word < cutpoint_l:
                 cutpoint_l = p_for_word
+                err = err_for_word
 
         cutpoint_not_l = 0
-
+        err_not_l = None
         for word in self.not_in_language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err_for_word = self.automata.process(word)
             if p_for_word > cutpoint_not_l:
                 cutpoint_not_l = p_for_word
+                err_not_l = err_for_word
 
-        if cutpoint_l < cutpoint_not_l:
+        error = max(err, err_not_l)
+        cutpoint = (cutpoint_l + cutpoint_not_l) / 2
+        epsilon = cutpoint - cutpoint_not_l
+
+        if cutpoint_not_l > cutpoint + error:
             return False
+        else:
+            return cutpoint, epsilon, error
 
-        cutpoint = (cutpoint_l - cutpoint_not_l) / 2
-        epsilon = cutpoint_l - cutpoint
-        return cutpoint, epsilon
 
     def check_monte_carlo(self):
         for word in self.language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err = self.automata.process(word)
             if p_for_word != 1:
                 return False
         epsilon = 0
         for word in self.not_in_language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err = self.automata.process(word)
             if p_for_word > epsilon:
                 epsilon = p_for_word
 
@@ -91,12 +97,12 @@ class LanguageChecker:
     def check_bounded_error(self):
         epsilon = 0
         for word in self.language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err = self.automata.process(word)
             if p_for_word < 1 - epsilon:
                 epsilon = 1 - p_for_word
 
         for word in self.not_in_language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err = self.automata.process(word)
             if p_for_word > epsilon:
                 epsilon = p_for_word
 
@@ -107,14 +113,14 @@ class LanguageChecker:
 
     def check_positive_unbounded(self):
         for word in self.language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err = self.automata.process(word)
             if p_for_word == 0:
                 return False
         return True
 
     def check_negative_unbounded(self):
         for word in self.language:
-            p_for_word = self.automata.process(word)
+            p_for_word, err = self.automata.process(word)
             if p_for_word != 1:
                 return False
 

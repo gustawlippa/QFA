@@ -16,9 +16,9 @@ def main():
     mm_checker.check_language()
     print(mm_checker.accepted)
 
-    pfa_checker = Checker.LanguageChecker(pfa, ["aa"], ["ab"])
-    pfa_checker.check_language()
-    print(pfa_checker.accepted)
+    # pfa_checker = Checker.LanguageChecker(pfa, ["aa"], ["ab"])
+    # pfa_checker.check_language()
+    # print(pfa_checker.accepted)
 
     gqfa_checker = Checker.LanguageChecker(gqfa, ["aa"], ["a"])
     gqfa_checker.check_language()
