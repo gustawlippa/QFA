@@ -21,7 +21,7 @@ class MO_1QFA(Automata):
         # np matrix containing ones and zeroes
         self.projective_measurement = projective_measurement
 
-    def process(self, word: str):
+    def process(self, word: str) -> (float, float):
         acceptance_probability = self.initial_state
         for letter in word:
             transition_matrix = self.transition_matrices[self.alphabet.index(letter)]

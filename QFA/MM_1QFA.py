@@ -5,6 +5,7 @@ from math import sqrt
 from QFA.GQFA import get_complementary_matrix, check_transition_matrices
 from QFA.Automata import Automata
 
+State = (np.ndarray, float, float)
 
 
 class MM_1QFA(Automata):
@@ -33,33 +34,36 @@ class MM_1QFA(Automata):
             self.projective_measurement_non = get_complementary_matrix([projective_measurement_accept,
                                                                         projective_measurement_reject])
 
-    def process(self, word: str):
+    def process(self, word: str) -> (float, float):
 
-        total_state = (self.initial_state, 0, 0)
+        full_state = (self.initial_state, 0, 0)
 
         for letter in word:
             # print("Letter:\t", letter, ", state before:\t", total_state)
             transition_matrix = self.transition_matrices[self.alphabet.index(letter)]
-            state = total_state[0]
 
-            continue_probability = self.projective_measurement_non @ transition_matrix @ state
-
-            acceptance_probability = total_state[1]
-            v = self.projective_measurement_accept @ transition_matrix @ state
-            acceptance_probability += np.vdot(v, v)
-
-            rejection_probability = total_state[2]
-            v = self.projective_measurement_reject @ transition_matrix @ state
-            rejection_probability += np.vdot(v, v)
-
-            total_state = (continue_probability, acceptance_probability, rejection_probability)
+            full_state = self.process_word(full_state, transition_matrix)
             # print("Letter:\t", letter, ", state after:\t", total_state)
 
         # print("End sign:\t$, state:\t", total_state)
         transition_matrix = self.transition_matrices[-1]
+        full_state = self.process_word(full_state, transition_matrix)
+
+        (continue_probability, acceptance_probability, rejection_probability) = full_state
+
+        # print("End state:\t", total_state)
+        error = abs(1 - acceptance_probability - rejection_probability)
+
+        return full_state[1], error
+
+    def process_word(self,
+                     total_state: State,
+                     transition_matrix: np.ndarray
+                     ) -> (State, np.ndarray, np.ndarray):
+
         state = total_state[0]
 
-        continue_probability = self.projective_measurement_non @ transition_matrix @ state
+        new_state = self.projective_measurement_non @ transition_matrix @ state
 
         acceptance_probability = total_state[1]
         v = self.projective_measurement_accept @ transition_matrix @ state
@@ -69,12 +73,7 @@ class MM_1QFA(Automata):
         v = self.projective_measurement_reject @ transition_matrix @ state
         rejection_probability += np.vdot(v, v)
 
-        total_state = (continue_probability, acceptance_probability, rejection_probability)
-
-        # print("End state:\t", total_state)
-        error = abs(1 - acceptance_probability - rejection_probability)
-
-        return total_state[1], error
+        return new_state, acceptance_probability, rejection_probability
 
 
 def example():
