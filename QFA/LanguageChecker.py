@@ -1,7 +1,9 @@
+from QFA.Automata import Automata
 
 
 class LanguageChecker:
-    def __init__(self, automata,
+    def __init__(self,
+                 automata: Automata,
                  language: list,
                  not_in_language: list):
         self.language = language

@@ -2,8 +2,10 @@ import numpy as np
 from typing import List
 from math import sqrt
 
+from QFA.Automata import Automata
 
-class PFA:
+
+class PFA(Automata):
     def __init__(self, alphabet: str,
                  initial_state: np.ndarray,
                  transition_matrices: List[np.ndarray],
@@ -19,7 +21,7 @@ class PFA:
         # np column vector of ones and zeroes
         self.acceptance_vector = acceptance_vector
 
-    def process(self, word: str):
+    def process(self, word: str) -> (float, float):
         acceptance_probability = self.initial_state
         for letter in word:
             transition_matrix = self.transition_matrices[self.alphabet.index(letter)]

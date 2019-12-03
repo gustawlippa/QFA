@@ -2,8 +2,10 @@ import numpy as np
 from typing import List
 from math import sqrt
 
+from QFA.Automata import Automata
 
-class MO_1QFA:
+
+class MO_1QFA(Automata):
 
     def __init__(self, alphabet: str,
                  initial_state: np.ndarray,
@@ -19,7 +21,7 @@ class MO_1QFA:
         # np matrix containing ones and zeroes
         self.projective_measurement = projective_measurement
 
-    def process(self, word: str):
+    def process(self, word: str) -> (float, float):
         acceptance_probability = self.initial_state
         for letter in word:
             transition_matrix = self.transition_matrices[self.alphabet.index(letter)]
