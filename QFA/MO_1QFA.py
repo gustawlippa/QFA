@@ -2,8 +2,10 @@ import numpy as np
 from typing import List
 from math import sqrt
 
+from QFA.Automata import Automata
 
-class MO_1QFA:
+
+class MO_1QFA(Automata):
 
     def __init__(self, alphabet: str,
                  initial_state: np.ndarray,

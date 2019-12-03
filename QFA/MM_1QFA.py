@@ -3,9 +3,11 @@ from typing import List
 from math import sqrt
 
 from QFA.GQFA import get_complementary_matrix, check_transition_matrices
+from QFA.Automata import Automata
 
 
-class MM_1QFA:
+
+class MM_1QFA(Automata):
 
     def __init__(self, alphabet: str,
                  initial_state: np.ndarray,

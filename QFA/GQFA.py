@@ -2,6 +2,7 @@ import numpy as np
 from typing import List
 from math import sqrt
 
+from QFA.Automata import Automata
 
 def get_complementary_matrix(list_of_matrices):
     size = list_of_matrices[0].shape[0]
@@ -38,9 +39,10 @@ def check_transition_matrices(matrices):
         raise Exception('Transition matrix is not unitary')
 
 
-class GQFA:
+class GQFA(Automata):
 
-    def __init__(self, alphabet: str,
+    def __init__(self,
+                 alphabet: str,
                  initial_state: np.ndarray,
                  transition_matrices: List[np.ndarray],
                  projective_measurements: List[List[np.ndarray]]
