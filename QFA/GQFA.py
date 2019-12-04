@@ -38,7 +38,7 @@ def check_transition_matrices(matrices: List[np.ndarray]) -> List[np.ndarray]:
     if all([is_unitary(m) for m in matrices]):
         return matrices
     else:
-        print([is_unitary(m) for m in matrices])
+        # print([is_unitary(m) for m in matrices])
         raise Exception('Transition matrix is not unitary')
 
 
@@ -75,7 +75,7 @@ class GQFA(Automata):
 
             total_state = self.process_word(total_state, transition_matrix, projective_measurements)
 
-            print("Letter:\t", letter, ", state after:\t", total_state)
+            # print("Letter:\t", letter, ", state after:\t", total_state)
 
         # print("End sign:\t$, state:\t", total_state)
         transition_matrix = self.transition_matrices[-1]
