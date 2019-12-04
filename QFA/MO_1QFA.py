@@ -3,6 +3,7 @@ from typing import List
 from math import sqrt
 
 from QFA.Automata import Automata
+from math import cos, sin, pi
 
 
 class MO_1QFA(Automata):
@@ -106,6 +107,25 @@ def mo_1qfa_example_3():
     print('\t', qfa3.process(''))
 
     return qfa3
+
+
+def mo_1qfa_example_4():
+    # This automaton should accept language L = {a^(3n)}
+    # words in L should have acceptance probability 1
+    # words not in L should
+    alphabet = 'a'
+
+    a_matrix = np.array([[cos(2*pi/3), -sin(2*pi/3)],
+                         [sin(2*pi/3), cos(2*pi/3)]])
+
+    end_matrix = np.eye(2)
+
+    projection_matrix = np.array([[1, 0], [0, 0]])
+
+    initial_state = np.array([[1], [0]])
+
+    qfa = MO_1QFA(alphabet, initial_state, [a_matrix, end_matrix], projection_matrix)
+    return qfa
 
 
 if __name__ == "__main__":
