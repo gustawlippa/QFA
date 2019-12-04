@@ -11,16 +11,15 @@ class LanguageGenerator:
 
     def __init__(self,
                  regex: str,
-                 alphabet: str = None):
+                 alphabet: str):
 
-        if alphabet is not None:
-            regex = parse_alphabet(alphabet, regex)
+        regex = parse_alphabet(alphabet, regex)
         # print('REGEX ', regex)
 
         self.regex = regex
         self.alphabet = alphabet
 
-    def get_language_sample(self, n, short_words_percent=30):
+    def get_language_sample(self, n=100, short_words_percent=30):
         words = []
         not_in_lang = []
         in_lang = []
@@ -28,8 +27,10 @@ class LanguageGenerator:
 
         short_words = math.ceil(n*short_words_percent/100)
         long_words = n*(1-short_words_percent)//100
-
-        short_words_border = math.ceil(math.log(short_words, len(self.alphabet)))
+        if len(self.alphabet)>1:
+            short_words_border = math.ceil(math.log(short_words, len(self.alphabet)))
+        else:
+            short_words_border = short_words*2
 
         if long_words - short_words > 100:
             max_len = (long_words - short_words) * 2
