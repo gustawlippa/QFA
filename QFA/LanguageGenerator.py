@@ -1,4 +1,3 @@
-import exrex as e
 import re
 import random
 import math
