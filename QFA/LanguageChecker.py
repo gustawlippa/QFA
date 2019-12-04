@@ -10,8 +10,13 @@ class LanguageChecker:
         self.not_in_language = not_in_language
         self.automata = automata
         self.accepted = []
+        self.lang_results = []
+        self.not_lang_results = []
 
     def check_language(self):
+
+        self.run()
+
         cutpoint = self.check_cutpoint()
         if cutpoint:
             self.accepted.append(("cutpoint", cutpoint))
@@ -37,17 +42,19 @@ class LanguageChecker:
         if negative:
             self.accepted.append("negative unbounded")
 
+    def run(self):
+        self.lang_results = [self.automata.process(word) for word in self.language]
+        self.not_lang_results = [self.automata.process(word) for word in self.not_in_language]
+
     def check_cutpoint(self):
         cutpoint = 1
         err = None
-        for word in self.language:
-            p_for_word, err_for_word = self.automata.process(word)
+        for (p_for_word, err_for_word) in self.lang_results:
             if p_for_word < cutpoint:
                 cutpoint = p_for_word
                 err = err_for_word
 
-        for word in self.not_in_language:
-            p_for_word, err_for_word = self.automata.process(word)
+        for (p_for_word, err_for_word) in self.not_lang_results:
             if p_for_word > cutpoint + err + err_for_word:
                 return False
 
@@ -57,16 +64,14 @@ class LanguageChecker:
         cutpoint_l = 1
         err = None
 
-        for word in self.language:
-            p_for_word, err_for_word = self.automata.process(word)
+        for (p_for_word, err_for_word) in self.lang_results:
             if p_for_word < cutpoint_l:
                 cutpoint_l = p_for_word
                 err = err_for_word
 
         cutpoint_not_l = 0
         err_not_l = None
-        for word in self.not_in_language:
-            p_for_word, err_for_word = self.automata.process(word)
+        for (p_for_word, err_for_word) in self.not_lang_results:
             if p_for_word > cutpoint_not_l:
                 cutpoint_not_l = p_for_word
                 err_not_l = err_for_word
@@ -81,17 +86,15 @@ class LanguageChecker:
             return cutpoint, epsilon, error
 
     def check_monte_carlo(self):
-        for word in self.language:
-            p_for_word, err = self.automata.process(word)
-            if p_for_word < 1 - err or p_for_word > 1 + err:
+        for (p_for_word, err_for_word) in self.lang_results:
+            if p_for_word < 1 - err_for_word or p_for_word > 1 + err_for_word:
                 return False
         epsilon = 0
         error = None
-        for word in self.not_in_language:
-            p_for_word, err = self.automata.process(word)
+        for (p_for_word, err_for_word) in self.not_lang_results:
             if p_for_word > epsilon:
                 epsilon = p_for_word
-                error = err
+                error = err_for_word
 
         if epsilon >= 1/2 - error:
             return False
@@ -100,15 +103,13 @@ class LanguageChecker:
 
     def check_bounded_error(self):
         epsilon = 0
-        for word in self.language:
-            p_for_word, err = self.automata.process(word)
-            if p_for_word < 1 - epsilon - err:
-                epsilon = 1 - p_for_word - err
+        for (p_for_word, err_for_word) in self.lang_results:
+            if p_for_word < 1 - epsilon - err_for_word:
+                epsilon = 1 - p_for_word - err_for_word
 
-        for word in self.not_in_language:
-            p_for_word, err = self.automata.process(word)
-            if p_for_word > epsilon + err:
-                epsilon = p_for_word + err
+        for (p_for_word, err_for_word) in self.not_lang_results:
+            if p_for_word > epsilon + err_for_word:
+                epsilon = p_for_word + err_for_word
 
         if epsilon >= 1/2:
             return False
@@ -116,16 +117,14 @@ class LanguageChecker:
         return epsilon
 
     def check_positive_unbounded(self):
-        for word in self.language:
-            p_for_word, err = self.automata.process(word)
-            if 0 - err < p_for_word < 0 + err:
+        for (p_for_word, err_for_word) in self.lang_results:
+            if 0 - err_for_word < p_for_word < 0 + err_for_word:
                 return False
         return True
 
     def check_negative_unbounded(self):
-        for word in self.language:
-            p_for_word, err = self.automata.process(word)
-            if p_for_word < 1 - err or p_for_word > 1 + err:
+        for (p_for_word, err_for_word) in self.lang_results:
+            if p_for_word < 1 - err_for_word or p_for_word > 1 + err_for_word:
                 return False
 
         return True
