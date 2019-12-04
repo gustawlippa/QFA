@@ -19,7 +19,7 @@ class LanguageGenerator:
         self.regex = regex
         self.alphabet = alphabet
 
-    def get_language_sample(self, n=100, short_words_percent=30):
+    def get_language_sample(self, n=100, short_words_percent=30, max_len=100):
         words = []
         not_in_lang = []
         in_lang = []
@@ -27,15 +27,16 @@ class LanguageGenerator:
 
         short_words = math.ceil(n*short_words_percent/100)
         long_words = n*(1-short_words_percent)//100
-        if len(self.alphabet)>1:
+
+        if len(self.alphabet) > 1:
             short_words_border = math.ceil(math.log(short_words, len(self.alphabet)))
         else:
             short_words_border = short_words*2
 
-        if long_words - short_words > 100:
+        # print("Short words are up to length: ", short_words_border)
+
+        if long_words - short_words > max_len:
             max_len = (long_words - short_words) * 2
-        else:
-            max_len = 100
 
         for i in range(n):
             dec = random.random()
