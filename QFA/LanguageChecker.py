@@ -49,6 +49,8 @@ class LanguageChecker:
     def check_cutpoint(self):
         cutpoint = 1
         err = None
+        if not self.lang_results or not self.not_lang_results:
+            self.run()
         for (p_for_word, err_for_word) in self.lang_results:
             if p_for_word < cutpoint:
                 cutpoint = p_for_word
@@ -63,6 +65,8 @@ class LanguageChecker:
     def check_isolated_cutpoint(self):
         cutpoint_l = 1
         err = None
+        if not self.lang_results or not self.not_lang_results:
+            self.run()
 
         for (p_for_word, err_for_word) in self.lang_results:
             if p_for_word < cutpoint_l:
@@ -86,6 +90,9 @@ class LanguageChecker:
             return cutpoint, epsilon, error
 
     def check_monte_carlo(self):
+        if not self.lang_results or not self.not_lang_results:
+            self.run()
+
         for (p_for_word, err_for_word) in self.lang_results:
             if p_for_word < 1 - err_for_word or p_for_word > 1 + err_for_word:
                 return False
@@ -103,6 +110,9 @@ class LanguageChecker:
 
     def check_bounded_error(self):
         epsilon = 0
+        if not self.lang_results or not self.not_lang_results:
+            self.run()
+
         for (p_for_word, err_for_word) in self.lang_results:
             if p_for_word < 1 - epsilon - err_for_word:
                 epsilon = 1 - p_for_word - err_for_word
@@ -117,12 +127,18 @@ class LanguageChecker:
         return epsilon
 
     def check_positive_unbounded(self):
+        if not self.lang_results:
+            self.run()
+
         for (p_for_word, err_for_word) in self.lang_results:
             if 0 - err_for_word < p_for_word < 0 + err_for_word:
                 return False
         return True
 
     def check_negative_unbounded(self):
+        if not self.lang_results:
+            self.run()
+
         for (p_for_word, err_for_word) in self.lang_results:
             if p_for_word < 1 - err_for_word or p_for_word > 1 + err_for_word:
                 return False

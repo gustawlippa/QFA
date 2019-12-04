@@ -8,7 +8,6 @@ class Plotter:
     def __init__(self, language_checker: LanguageChecker):
         self.language_checker = language_checker
 
-
     def plot(self):
         if not self.language_checker.lang_results:
             self.language_checker.run()
@@ -47,7 +46,6 @@ if __name__ == "__main__":
     lang_checker = LanguageChecker(qfa, l, ln)
 
     p = Plotter(lang_checker)
-
     p.plot()
 
 
