@@ -4,7 +4,6 @@ import numpy as np
 from math import sqrt, cos, sin, pi
 
 
-
 class MO1QFATest(unittest.TestCase):
 
     def test_example1(self):
@@ -89,11 +88,22 @@ class MO1QFATest(unittest.TestCase):
 
         qfa = MO.MO_1QFA(alphabet, initial_state, [a_matrix, end_matrix], projection_matrix)
 
+        from QFA.LanguageGenerator import LanguageGenerator
+        lg = LanguageGenerator('(aaa)*', 'a')
+        l, ln = lg.get_language_sample()
+        error = 1**(-15)
+
+        for w in l:
+            p, e = qfa.process(w)
+            self.assertAlmostEqual(p, 1, delta=max(error, e))
+
+        for w in ln:
+            p, e = qfa.process(w)
+            self.assertAlmostEqual(p, 1/4, delta=max(error, e))
+
         p_a, e_a = qfa.process('a')
         p_aa, e_aa = qfa.process('aa')
         p_aaa, e_aaa = qfa.process('aaa')
-
-        error = 1**(-15)
 
         self.assertAlmostEqual(p_a, 1/4, delta=max(error, e_a))
         self.assertAlmostEqual(p_aa, 1/4, delta=max(error, e_aa))
