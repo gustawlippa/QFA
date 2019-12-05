@@ -9,7 +9,7 @@ class LanguageChecker:
         self.language = language
         self.not_in_language = not_in_language
         self.automata = automata
-        self.accepted = []
+        self.accepted = {}
         self.lang_results = []
         self.not_lang_results = []
 
@@ -19,28 +19,28 @@ class LanguageChecker:
 
         cutpoint = self.check_cutpoint()
         if cutpoint:
-            self.accepted.append(("cutpoint", cutpoint))
+            self.accepted["cutpoint"] = cutpoint
 
         result = self.check_isolated_cutpoint()
         if result:
             isolated_cutpoint, epsilon, error = result
-            self.accepted.append(("isolated_cutpoint", isolated_cutpoint, epsilon, error))
+            self.accepted["isolated_cutpoint"] = (isolated_cutpoint, epsilon, error)
 
         monte_carlo_eps = self.check_monte_carlo()
         if monte_carlo_eps:
-            self.accepted.append(("Monte_Carlo", monte_carlo_eps))
+            self.accepted["monte_carlo"] = monte_carlo_eps
 
         bounded_err = self.check_bounded_error()
         if bounded_err:
-            self.accepted.append(("bounded_error", bounded_err))
+            self.accepted["bounded_error"] = bounded_err
 
         positive = self.check_positive_unbounded()
         if positive:
-            self.accepted.append("positive_unbounded")
+            self.accepted["positive_unbounded"] = True
 
         negative = self.check_negative_unbounded()
         if negative:
-            self.accepted.append("negative unbounded")
+            self.accepted["negative_unbounded"] = True
 
     def run(self):
         self.lang_results = [self.automata.process(word) for word in self.language]
