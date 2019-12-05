@@ -1,4 +1,5 @@
 from QFA import LanguageChecker as Checker, GQFA, MM_1QFA as MM, PFA as PFA
+from QFA.LanguageGenerator import LanguageGenerator
 
 
 def main():
@@ -15,9 +16,15 @@ def main():
     pfa_checker.check_language()
     print('PFA', pfa_checker.accepted)
 
-    gqfa_checker = Checker.LanguageChecker(gqfa, ["aa"], ["a"])
+    gqfa_checker = Checker.LanguageChecker(gqfa, ["aa", "aaa"], ["a"])
     gqfa_checker.check_language()
     print('GQFA', gqfa_checker.accepted)
+
+    lg = LanguageGenerator('(aa)*', 'a')
+    l, nl = lg.get_language_sample()
+    gqfa_checker_generated = Checker.LanguageChecker(gqfa, l, nl)
+    gqfa_checker_generated.check_language()
+    print('GQFA 2', gqfa_checker_generated.accepted)
 
 
 if __name__ == "__main__":
