@@ -26,9 +26,6 @@ def main():
     gqfa_checker_generated.check_language()
     print('GQFA 2', gqfa_checker_generated.accepted)
 
-    mo = MO.example()
-
-
 
 if __name__ == "__main__":
     main()
