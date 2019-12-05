@@ -10,7 +10,7 @@ class Plotter:
 
     def plot(self):
         if not self.language_checker.lang_results:
-            self.language_checker.run()
+            self.language_checker.check_language()
 
         probabilities_in_lang = [e[0] for e in self.language_checker.lang_results]
         probabilities_not_in_lang = [e[0] for e in self.language_checker.not_lang_results]
@@ -19,15 +19,39 @@ class Plotter:
             n, bins, patches = plt.hist(probabilities_not_in_lang, bins='auto', range=(0, 1), alpha=0.5,
                                         label='Words not in language', color='red', edgecolor='black')
             n, bins, patches = plt.hist(probabilities_in_lang,  bins='auto', range=(0, 1), alpha=0.5,
-                                        label='Words in language', color='green',edgecolor='black')
+                                        label='Words in language', color='green', edgecolor='black')
         except:
             n, bins, patches = plt.hist(probabilities_not_in_lang, bins=np.linspace(0, 1, 100), range=(0, 1), alpha=0.5,
                                         label='Words not in language', color='red', edgecolor='black')
             n, bins, patches = plt.hist(probabilities_in_lang, bins=np.linspace(0, 1, 100), range=(0, 1), alpha=0.5,
                                         label='Words in language', color='green', edgecolor='black')
 
-        # for i, number in enumerate(n):
-        #     plt.text(x = )
+        min_ylim, max_ylim = plt.ylim()
+
+        if 'isolated_cutpoint' in self.language_checker.accepted:
+            ctp = self.language_checker.accepted['isolated_cutpoint'][0]
+            eps = self.language_checker.accepted['isolated_cutpoint'][1]
+            plt.axvline(ctp, color='k')
+            plt.text(ctp, max_ylim * 1.01, 'Cutpoint: {:.2f}'.format(ctp), horizontalalignment='center', rotation=60)
+            plt.axvline(ctp + eps, color='k', linestyle='dashed')
+            plt.text(ctp + eps, max_ylim * 1.01, 'Cutpoint+$\epsilon$: {:.2f}'.format(ctp + eps),
+                     horizontalalignment='center', rotation=60)
+            plt.axvline(ctp - eps, color='k', linestyle='dashed')
+            plt.text(ctp - eps, max_ylim * 1.01, 'Cutpoint-$\epsilon$: {:.2f}'.format(ctp - eps),
+                     horizontalalignment='center', rotation=60)
+        elif 'cutpoint' in self.language_checker.accepted:
+            ctp = self.language_checker.accepted['cutpoint']
+            plt.axvline(ctp, color='k')
+            plt.text(ctp, max_ylim * 1.01, 'Cutpoint: {:.2f}'.format(ctp), horizontalalignment='center', rotation=60)
+        if 'monte carlo' in self.language_checker.accepted:
+            eps = self.language_checker.accepted['monte_carlo']
+            plt.axvline(1 / 2 + eps, color='k', linestyle='dashed')
+            plt.text(1 / 2 + eps, max_ylim * 1.01, 'Monte Carlo boundary: {:.2f}'.format(1 / 2 + eps),
+                     horizontalalignment='center', rotation=60)
+            plt.axvline(1 / 2 - eps, color='k', linestyle='dashed')
+            plt.text(1 / 2 - eps, max_ylim * 1.01, 'Monte Carlo boundary: {:.2f}'.format(1 / 2 - eps),
+                     horizontalalignment='center', rotation=60)
+
         plt.legend()
         plt.show()
 
