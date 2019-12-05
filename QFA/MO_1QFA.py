@@ -42,7 +42,8 @@ def example():
     print('MO_1QFA examples:')
     mo_1qfa_example_1()
     mo_1qfa_example_2()
-    qfa = mo_1qfa_example_3()
+    mo_1qfa_example_3()
+    qfa = mo_1qfa_example_4()
     return qfa
 
 
@@ -125,6 +126,11 @@ def mo_1qfa_example_4():
     initial_state = np.array([[1], [0]])
 
     qfa = MO_1QFA(alphabet, initial_state, [a_matrix, end_matrix], projection_matrix)
+
+    print("mo_1qfa4")
+    print("a\t", qfa.process('a'))
+    print("aa\t", qfa.process('aa'))
+    print("aaa\t", qfa.process('aaa'))
     return qfa
 
 

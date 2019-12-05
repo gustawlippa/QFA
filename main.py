@@ -1,4 +1,4 @@
-from QFA import LanguageChecker as Checker, GQFA, MM_1QFA as MM, PFA as PFA
+from QFA import LanguageChecker as Checker, GQFA, MM_1QFA as MM, PFA as PFA, MO_1QFA as MO
 from QFA.LanguageGenerator import LanguageGenerator
 
 
@@ -25,6 +25,9 @@ def main():
     gqfa_checker_generated = Checker.LanguageChecker(gqfa, l, nl)
     gqfa_checker_generated.check_language()
     print('GQFA 2', gqfa_checker_generated.accepted)
+
+    mo = MO.example()
+
 
 
 if __name__ == "__main__":
