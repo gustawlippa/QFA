@@ -69,8 +69,7 @@ def get_random_word(alphabet, length):
 def example():
     lg = LanguageGenerator('[ca]+.\a*a[jk]?', 'abcdefghijk')
     i, n = lg.get_language_sample(1000)
-    # for w in i+n:
-    #     print(len(w), w)
+
     print('Words in language: ', len(i))
     print('Words not in language: ', len(n))
 

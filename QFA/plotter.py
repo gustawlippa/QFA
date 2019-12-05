@@ -43,8 +43,8 @@ class Plotter:
             ctp = self.language_checker.accepted['cutpoint']
             plt.axvline(ctp, color='k')
             plt.text(ctp, max_ylim * 1.01, 'Cutpoint: {:.2f}'.format(ctp), horizontalalignment='center', rotation=60)
-        if 'monte carlo' in self.language_checker.accepted:
-            eps = self.language_checker.accepted['monte_carlo']
+        if 'Monte_Carlo' in self.language_checker.accepted:
+            eps = self.language_checker.accepted['Monte_Carlo']
             plt.axvline(1 / 2 + eps, color='k', linestyle='dashed')
             plt.text(1 / 2 + eps, max_ylim * 1.01, 'Monte Carlo boundary: {:.2f}'.format(1 / 2 + eps),
                      horizontalalignment='center', rotation=60)

@@ -1,4 +1,4 @@
-from QFA import LanguageChecker as Checker, GQFA, MM_1QFA as MM, PFA as PFA
+from QFA import LanguageChecker as Checker, GQFA, MM_1QFA as MM, PFA as PFA, MO_1QFA as MO
 from QFA.LanguageGenerator import LanguageGenerator
 
 
