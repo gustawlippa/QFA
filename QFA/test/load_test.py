@@ -10,64 +10,23 @@ from scipy.stats import unitary_group
 import matplotlib.pyplot as plt
 
 
-def qfa():
+def random_qfa(n, alphabet):
+    initial_state = np.zeros((n, n))
+    initial_state[0, 0] = 1
 
-    alphabet = 'abcd'
+    acc_measure = np.zeros((n, n))
+    acc_measure[-1, -1] = 1
 
-    initial_state = np.array([[1], [0], [0], [0]])
+    rej_measure = np.zeros((n, n))
+    rej_measure[-2, -2] = 1
 
+    measurements = [[acc_measure, rej_measure] for i in range(len(alphabet) + 1)]
 
-    a_matrix = np.array([[1 / 2, 1 / 2, sqrt(1 / 2), 0],
-                             [sqrt(1 / 2), -sqrt(1 / 2), 0, 0],
-                             [1 / 2, 1 / 2, -sqrt(1 / 2), 0],
-                             [0, 0, 0, 1]])
+    random_matrix = unitary_group.rvs(n)
+    transition_matrices = [random_matrix for l in range(len(alphabet) + 1)]
+    qfa = GQFA(alphabet, initial_state, transition_matrices, measurements)
 
-    b_matrix = np.array([[1 / 2, 1 / 2, sqrt(1 / 2), 0],
-                             [sqrt(1 / 2), -sqrt(1 / 2), 0, 0],
-                             [1 / 2, 1 / 2, -sqrt(1 / 2), 0],
-                             [0, 0, 0, 1]]).T
-
-    c_matrix = np.array([[sqrt(1 / 2), 0, sqrt(1 / 2), 0],
-                             [0, sqrt(1 / 2), 0, sqrt(1 / 2)],
-                             [sqrt(1 / 2), 0, -sqrt(1 / 2), 0],
-                             [0, sqrt(1 / 2), 0, -sqrt(1 / 2)]])
-
-    d_matrix = np.array([[sqrt(1 / 2), 0, sqrt(1 / 2), 0],
-                             [0, sqrt(1 / 2), 0, sqrt(1 / 2)],
-                             [sqrt(1 / 2), 0, -sqrt(1 / 2), 0],
-                             [0, sqrt(1 / 2), 0, -sqrt(1 / 2)]]).T
-
-    measurement_1 = np.array([[0, 0, 0, 0],
-                                [0, 0, 0, 0],
-                                [0, 0, 1, 0],
-                                [0, 0, 0, 0]])
-
-    measurement_2 = np.array([[0, 0, 0, 0],
-                                [0, 0, 0, 0],
-                                [0, 0, 0, 0],
-                                [0, 0, 0, 1]])
-
-    measurement_3 = np.array([[1, 0, 0, 0],
-                                [0, 0, 0, 0],
-                                [0, 0, 0, 0],
-                                [0, 0, 0, 1]])
-    measurement_4 = np.array([[1, 0, 0, 0],
-                                [0, 1, 0, 0],
-                                [0, 0, 0, 0],
-                                [0, 0, 0, 1]])
-
-    measurement_5 = np.array([[1, 0, 0, 0],
-                                [0, 1, 0, 0],
-                                [0, 0, 1, 0],
-                                [0, 0, 0, 1]])
-
-    end_matrix = np.array([[0, 0, 0, 1],
-                               [0, 0, 1, 0],
-                               [1, 0, 0, 0],
-                               [0, 1, 0, 0]])
-
-    gqfa = GQFA(alphabet, initial_state, [a_matrix, b_matrix, c_matrix, d_matrix, end_matrix], [[measurement_1, measurement_2]]*5)
-    return gqfa, alphabet
+    return qfa
 
 
 def load_test(gqfa, alphabet):
@@ -93,21 +52,42 @@ def do_load_test(automata,alphabet,  words_no, n=1):
 
 def linear_w_len_test(gqfa, alphabet):
 
-    # l, nl = lg.get_language_sample(10000)
-    # print('got')
-    # lc = LanguageChecker(gqfa, l, nl)
-    # print('created')
-    import time
-    # for i in range(10):
-    #     lc.check_language()
-
-    # lc.check_language()
-
     n = 50
 
-    word_lengths = [1,10,100,1000, 10000, 100000, 1000000]
+    word_lengths = [5, 10, 25, 50, 75, 100, 250, 500,750, 1000,2000,3000,4000, 5000,6000,7000,8000,9000, 10000]
 
-    [do_test(gqfa, alphabet,  word_length, n) for word_length in word_lengths]
+    res = [(word_length, do_test(gqfa, alphabet,  word_length, n)) for word_length in word_lengths]
+
+    plot(res, "Word length", "Time (s)")
+
+
+def generated_words_test(gqfa,alphabet):
+    n = 100
+
+    word_lengths = [5, 10, 25, 50, 75, 100, 250, 500,750, 1000,2000,3000,4000, 5000]
+
+    res = [(word_length, do_gen_test(gqfa, alphabet,  word_length, n)) for word_length in word_lengths]
+
+    plot(res, "Word length", "Time (s)")
+
+
+def do_gen_test(automata, alphabet,  w_l, n):
+    lg = LanguageGenerator("\a*a[cde]*", alphabet)
+    l, ln = lg.get_language_sample(n, max_len=w_l)
+    print('Language done', len(l), ' ', len(ln) )
+
+    lc = LanguageChecker(automata, l, ln)
+
+    print('Checkers created')
+
+    t_s = time.time()
+    lc.check_language()
+    t_e = time.time()
+    print('word length ', w_l)
+    print('time in s:', t_e - t_s)
+    print('one execution time: ', (t_e - t_s)/(n*2))
+
+    return (t_e - t_s)/(n*2)
 
 
 def do_test(automata, alphabet,  w_l, n):
@@ -128,8 +108,24 @@ def do_test(automata, alphabet,  w_l, n):
     return (t_e - t_s)/(n*2)
 
 
+def alphabet_len_test(automata_size):
+
+    n = 500
+    import string
+    alpha = string.ascii_letters
+    res = []
+    al_lengths = range(1, 30)
+    for len in al_lengths:
+        alphabet = alpha[0:len]
+        gqfa = random_qfa(automata_size, alphabet)
+
+        res.append((len, do_test(gqfa, alphabet, 300, n)))
+
+    plot(res, "Alphabet length", "Time (s)")
+
+
 def unitary_size_test():
-    sizes = [i for i in range(10, 500, 50)]
+    sizes = [i for i in range(2, 50, 2)]
     alphabet = 'abcd'
 
     res = []
@@ -156,20 +152,27 @@ def unitary_size_test():
             result_tmp += do_test(qfa, alphabet, 1000, 1)
 
         res.append((size, result_tmp/rep_no))
+    plot(res, 'Automata size', 'Execution time (1 word, length 1000)')
 
-    plt.xlabel('Automata size')
-    plt.ylabel('Execution time (1 word, length 1000)')
-    x,y = list(zip(*res))
-    plt.plot(x,y)
+
+def plot(res, xlabel, ylabel):
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    x, y = list(zip(*res))
+    plt.plot(x, y)
     plt.show()
 
 
 def main():
-    gqfa, alphabet = qfa()
+    alphabet = "abcde"
+    automata_size = 20
+    gqfa = random_qfa(automata_size, alphabet)
     # linear_w_len_test(gqfa, alphabet)
-    load_test(gqfa, alphabet)
+    # generated_words_test(gqfa, alphabet)
+    # alphabet_len_test(automata_size)
+    # load_test(gqfa, alphabet)
+    unitary_size_test()
 
 
 if __name__ =="__main__":
-    # main()
-    unitary_size_test()
+    main()
