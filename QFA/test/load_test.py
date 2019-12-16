@@ -50,11 +50,39 @@ def do_load_test(automata,alphabet,  words_no, n=1):
     print('one execution: ', (t_e - t_s)/(words_no))
 
 
+def linear_w_len_tests_const_alhpabet(alphabet):
+    gqfa_10 = random_qfa(10, alphabet)
+    gqfa_20 = random_qfa(20, alphabet)
+    gqfa_30 = random_qfa(30, alphabet)
+    gqfa_40 = random_qfa(40, alphabet)
+    n = 50
+
+    word_lengths = [5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
+
+    res_10 = [(word_length, do_test(gqfa_10, alphabet, word_length, n)) for word_length in word_lengths]
+    res_20 = [(word_length, do_test(gqfa_20, alphabet, word_length, n)) for word_length in word_lengths]
+    res_30 = [(word_length, do_test(gqfa_30, alphabet, word_length, n)) for word_length in word_lengths]
+    res_40 = [(word_length, do_test(gqfa_40, alphabet, word_length, n)) for word_length in word_lengths]
+
+    plt.xlabel("Word length")
+    plt.ylabel("Time (s)")
+    x1, y1 = list(zip(*res_10))
+    x2, y2 = list(zip(*res_20))
+    x3, y3 = list(zip(*res_30))
+    x4, y4 = list(zip(*res_40))
+    plt.plot(x1, y1, "b-")
+    plt.plot(x2, y2, "r-")
+    plt.plot(x3, y3, "g-")
+    plt.plot(x4, y4, "c-")
+    plt.legend(("10 states", "20 states", "30 states", "40 states"))
+    plt.show()
+
+
 def linear_w_len_test(gqfa, alphabet):
 
     n = 50
 
-    word_lengths = [5, 10, 25, 50, 75, 100, 250, 500,750, 1000,2000,3000,4000, 5000,6000,7000,8000,9000, 10000]
+    word_lengths = [5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
 
     res = [(word_length, do_test(gqfa, alphabet,  word_length, n)) for word_length in word_lengths]
 
@@ -167,11 +195,11 @@ def main():
     alphabet = "abcde"
     automata_size = 20
     gqfa = random_qfa(automata_size, alphabet)
-    # linear_w_len_test(gqfa, alphabet)
+    linear_w_len_tests_const_alhpabet(alphabet)
     # generated_words_test(gqfa, alphabet)
     # alphabet_len_test(automata_size)
     # load_test(gqfa, alphabet)
-    unitary_size_test()
+    # unitary_size_test()
 
 
 if __name__ =="__main__":
