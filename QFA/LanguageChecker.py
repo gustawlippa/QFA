@@ -42,6 +42,8 @@ class LanguageChecker:
         if negative:
             self.accepted['negative_unbounded'] = True
 
+        return self.accepted
+
     def run(self):
         self.lang_results = [self.automata.process(word) for word in self.language]
         self.not_lang_results = [self.automata.process(word) for word in self.not_in_language]
@@ -51,6 +53,8 @@ class LanguageChecker:
         err = None
         if not self.lang_results or not self.not_lang_results:
             self.run()
+        if not self.lang_results:
+            raise Exception("Cannot calculate cutpoint because there are no words in the language")
         for (p_for_word, err_for_word) in self.lang_results:
             if p_for_word < cutpoint:
                 cutpoint = p_for_word
