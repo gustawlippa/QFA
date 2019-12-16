@@ -49,6 +49,32 @@ def do_load_test(automata,alphabet,  words_no, n=1):
     print('time in s:', t_e - t_s)
     print('one execution: ', (t_e - t_s)/(words_no))
 
+def linear_w_len_tests_const_states(states_no):
+    alph1 = "abcde"
+    alph2 = "abcdefghij"
+    alph3 = "abcdefghijklmnopqrst"
+
+    gqfa_5 = random_qfa(states_no, alph1)
+    gqfa_10 = random_qfa(states_no, alph2)
+    gqfa_20 = random_qfa(states_no, alph3)
+    n = 50
+
+    word_lengths = [5, 10, 25, 50, 75, 100, 250, 500, 750, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
+
+    res_5 = [(word_length, do_test(gqfa_5, alph1, word_length, n)) for word_length in word_lengths]
+    res_10 = [(word_length, do_test(gqfa_10, alph2, word_length, n)) for word_length in word_lengths]
+    res_20 = [(word_length, do_test(gqfa_20, alph3, word_length, n)) for word_length in word_lengths]
+
+    plt.xlabel("Word length")
+    plt.ylabel("Time (s)")
+    x1, y1 = list(zip(*res_5))
+    x2, y2 = list(zip(*res_10))
+    x3, y3 = list(zip(*res_20))
+    plt.plot(x1, y1, "b-")
+    plt.plot(x2, y2, "r-")
+    plt.plot(x3, y3, "g-")
+    plt.legend(("Alphabet size: 5", "Alphabet size: 10", "Alphabet size: 20"))
+    plt.show()
 
 def linear_w_len_tests_const_alhpabet(alphabet):
     gqfa_10 = random_qfa(10, alphabet)
@@ -195,7 +221,7 @@ def main():
     alphabet = "abcde"
     automata_size = 20
     gqfa = random_qfa(automata_size, alphabet)
-    linear_w_len_tests_const_alhpabet(alphabet)
+    linear_w_len_tests_const_states(automata_size)
     # generated_words_test(gqfa, alphabet)
     # alphabet_len_test(automata_size)
     # load_test(gqfa, alphabet)
