@@ -60,6 +60,9 @@ class Plotter:
             plt.text(1 / 2 - eps, max_ylim * 1.01, 'Monte Carlo boundary: {:.2f}'.format(1 / 2 - eps),
                      horizontalalignment='center', rotation=60)
 
+        plt.ylabel('Word count')
+        plt.xlabel('Acceptance probability')
+
         plt.legend()
         plt.show()
 
