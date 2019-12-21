@@ -16,9 +16,17 @@ class Plotter:
         probabilities_not_in_lang = [e[0] for e in self.language_checker.not_lang_results]
 
         try:
-            n, bins, patches = plt.hist(probabilities_not_in_lang, bins='auto', range=(0, 1), alpha=0.5,
-                                        label='Words not in language', color='red', edgecolor='black')
-            n, bins, patches = plt.hist(probabilities_in_lang,  bins='auto', range=(0, 1), alpha=0.5,
+            if len(probabilities_not_in_lang) > 100:
+                n, bins, patches = plt.hist(probabilities_not_in_lang, bins='auto', range=(0, 1), alpha=0.5,
+                                            label='Words not in language', color='red', edgecolor='black')
+            else:
+                n, bins, patches = plt.hist(probabilities_not_in_lang, bins=100, range=(0, 1), alpha=0.5,
+                                            label='Words not in language', color='red', edgecolor='black')
+            if len(probabilities_in_lang) > 100:
+                n, bins, patches = plt.hist(probabilities_in_lang,  bins='auto', range=(0, 1), alpha=0.5,
+                                        label='Words in language', color='green', edgecolor='black')
+            else:
+                n, bins, patches = plt.hist(probabilities_in_lang,  bins=100, range=(0, 1), alpha=0.5,
                                         label='Words in language', color='green', edgecolor='black')
         except:
             n, bins, patches = plt.hist(probabilities_not_in_lang, bins=np.linspace(0, 1, 100), range=(0, 1), alpha=0.5,
@@ -51,6 +59,9 @@ class Plotter:
             plt.axvline(1 / 2 - eps, color='k', linestyle='dashed')
             plt.text(1 / 2 - eps, max_ylim * 1.01, 'Monte Carlo boundary: {:.2f}'.format(1 / 2 - eps),
                      horizontalalignment='center', rotation=60)
+
+        plt.ylabel('Word count')
+        plt.xlabel('Acceptance probability')
 
         plt.legend()
         plt.show()
