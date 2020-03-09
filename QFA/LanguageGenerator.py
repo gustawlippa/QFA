@@ -33,7 +33,7 @@ class LanguageGenerator:
         else:
             short_words_border = short_words*2
 
-        if long_words - short_words > (max_len - short_words_border):
+        if long_words > (max_len - short_words_border)**len(self.alphabet):
             max_len = long_words * 2 + short_words_border
 
         for i in range(n):
