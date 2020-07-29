@@ -80,5 +80,3 @@ if __name__ == "__main__":
 
     p = Plotter(lang_checker)
     p.plot()
-
-

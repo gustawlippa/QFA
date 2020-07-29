@@ -1,6 +1,5 @@
 import numpy as np
 from typing import List
-from math import sqrt
 
 from QFA.Automata import Automata
 

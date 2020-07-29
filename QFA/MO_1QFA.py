@@ -57,7 +57,12 @@ def mo_1qfa_example_1():
     # it should return 1/2
     res = qfa.process('a')
     print('a\t', res)
-    # example from QFA paper - returns 0 as should
+    # example from QFA paper - returns 0 as it should
+    # the paper: https://www.researchgate.net/publication/264906610_Quantum_Finite_Automata
+    #   Qiu, Daowen & Li, Lvzhou & Mateus, Paulo & Gruska, Jozef.
+    #   (2012).
+    #   Quantum Finite Automata. Handbook of Finite State Based Models and Applications.
+    #   10.1201/b13055-7.
     res = qfa.process('aa')
     print('aa\t', res)
 
@@ -75,7 +80,7 @@ def mo_1qfa_example_2():
     initial_state = np.array([[1], [0]])
 
     qfa2 = MO_1QFA(alphabet, initial_state, [zero_matrix, one_matrix], projection_matrix)
-    # should behave as DFA expecting words with even number of '0's
+    # should behave like a DFA expecting words with an even number of '0's
     print('mo_qfa2')
     print('111\t', qfa2.process('111'))
     print('101\t', qfa2.process('101'))
@@ -92,12 +97,13 @@ def mo_1qfa_example_3():
     one_matrix = np.array([[1, 0], [0, 1]])
     projection_matrix = np.array([[1, 0], [0, 0]])
 
-    # same example, but initial state is complex
+    # same example as the mo_1qfa_example_2, but the initial state is complex
 
     initial_state = np.array([[1/2+1j/2], [1/(2*sqrt(2))+1j/(2*sqrt(2))]])
 
     qfa3 = MO_1QFA(alphabet, initial_state, [zero_matrix, one_matrix], projection_matrix)
-    # one must remember that initial state must be a quantum state, so it must comply with normalisation condition
+    # one must remember that the initial state must be a quantum state, so it must comply with the normalisation
+    # condition
     print('mo_qfa3')
     print('111\t', qfa3.process('111'))
     print('101\t', qfa3.process('101'))
@@ -108,9 +114,8 @@ def mo_1qfa_example_3():
 
 
 def mo_1qfa_example_4():
-    # This automaton should accept language L = {a^(3n)}
-    # words in L should have acceptance probability 1
-    # words not in L should
+    # This automaton should accept the language L = {a^(3n)}
+    # words in L should have the acceptance probability 1
     alphabet = 'a'
 
     a_matrix = np.array([[cos(2*pi/3), -sin(2*pi/3)],

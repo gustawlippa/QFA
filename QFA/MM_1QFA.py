@@ -108,7 +108,12 @@ def example():
     # it should return 1/2
     res = qfa.process('a')
     print('a\t', res)
-    # example from QFA paper - returns 0.9785533905932737, which is 5/8+1/(2sqrt(2)) as in the paper
+    # example from QFA paper - returns 0.9785533905932737, which is 5/8+1/(2sqrt(2)) as in the paper:
+    # https://www.researchgate.net/publication/264906610_Quantum_Finite_Automata
+    #   Qiu, Daowen & Li, Lvzhou & Mateus, Paulo & Gruska, Jozef.
+    #   (2012).
+    #   Quantum Finite Automata. Handbook of Finite State Based Models and Applications.
+    #   10.1201/b13055-7.
     res = qfa.process('aa')
     print('aa\t', res)
     return qfa
