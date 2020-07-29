@@ -26,10 +26,7 @@ class MO_1QFA(Automata):
         acceptance_probability = self.initial_state
         for letter in word:
             transition_matrix = self.transition_matrices[self.alphabet.index(letter)]
-            # print("Letter:\t", letter, "\nLeft:\n", transition_matrix, "\nRight:\n", acceptance_probability)
             acceptance_probability = transition_matrix @ acceptance_probability
-
-        # print("Measurement:\nLeft:\n", self.projective_measurement, "\nRight:\n", acceptance_probability)
 
         acceptance_probability = self.projective_measurement @ acceptance_probability
 

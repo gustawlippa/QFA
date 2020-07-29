@@ -71,8 +71,6 @@ if __name__ == "__main__":
 
     from QFA.MO_1QFA import mo_1qfa_example_4
     qfa = mo_1qfa_example_4()
-    # from QFA.MM_1QFA import example
-    # qfa = example()
 
     from QFA.LanguageGenerator import LanguageGenerator
     lg = LanguageGenerator('(aaa)*', 'a')

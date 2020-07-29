@@ -14,7 +14,6 @@ class LanguageGenerator:
                  alphabet: str):
 
         regex = parse_alphabet(alphabet, regex)
-        # print('REGEX ', regex)
 
         self.regex = regex
         self.alphabet = alphabet

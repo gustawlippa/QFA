@@ -39,19 +39,15 @@ class MM_1QFA(Automata):
         full_state = (self.initial_state, 0, 0)
 
         for letter in word:
-            # print("Letter:\t", letter, ", state before:\t", total_state)
             transition_matrix = self.transition_matrices[self.alphabet.index(letter)]
 
             full_state = self.process_word(full_state, transition_matrix)
-            # print("Letter:\t", letter, ", state after:\t", total_state)
 
-        # print("End sign:\t$, state:\t", total_state)
         transition_matrix = self.transition_matrices[-1]
         full_state = self.process_word(full_state, transition_matrix)
 
         (continue_probability, acceptance_probability, rejection_probability) = full_state
 
-        # print("End state:\t", total_state)
         error = abs(1 - acceptance_probability - rejection_probability)
 
         return full_state[1], error
