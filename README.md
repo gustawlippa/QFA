@@ -10,6 +10,8 @@ models.
 * **MM1QFA** - Measure-Many Quantum Finite Automaton
 * **GQFA** - General Quantum Finite Automaton
 
+Each module contains a usage example.
+
 ### Helper modules
 
 * **LanguageChecker** - used to check a language against an automaton using 
