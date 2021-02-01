@@ -21,6 +21,13 @@ multiple acceptance conditions
 
 [Here](./doc/pl/README.md) is the modules' overview in polish.
 
+## Installation
+
+QFA is available via pip:
+```
+pip3 install qfa
+```
+
 ## Citation
 
 If you have used our library and and would like to cite its usage, we please use the following BibTeX entry. Thanks!
