@@ -30,7 +30,7 @@ pip3 install qfa
 
 ## Citation
 
-If you have used our library and and would like to cite its usage, we please use the following BibTeX entry. Thanks!
+If you have used our library and and would like to cite its usage, please use the following BibTeX entry. Thanks!
 
 ```
 @article{lippa2020simulations,
