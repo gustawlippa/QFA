@@ -1,14 +1,14 @@
-from QFA.Automata import Automata
+from QFA.Automaton import Automaton
 
 
 class LanguageChecker:
     def __init__(self,
-                 automata: Automata,
+                 automaton: Automaton,
                  language: list,
                  not_in_language: list):
         self.language = language
         self.not_in_language = not_in_language
-        self.automata = automata
+        self.automaton = automaton
         self.accepted = {}
         self.lang_results = []
         self.not_lang_results = []
@@ -45,8 +45,8 @@ class LanguageChecker:
         return self.accepted
 
     def run(self):
-        self.lang_results = [self.automata.process(word) for word in self.language]
-        self.not_lang_results = [self.automata.process(word) for word in self.not_in_language]
+        self.lang_results = [self.automaton.process(word) for word in self.language]
+        self.not_lang_results = [self.automaton.process(word) for word in self.not_in_language]
 
     def check_cutpoint(self):
         cutpoint = 1

@@ -2,11 +2,11 @@ import numpy as np
 from typing import List
 from math import sqrt
 
-from QFA.Automata import Automata
+from QFA.Automaton import Automaton
 from math import cos, sin, pi
 
 
-class MO_1QFA(Automata):
+class MO_1QFA(Automaton):
 
     def __init__(self, alphabet: str,
                  initial_state: np.ndarray,

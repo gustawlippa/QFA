@@ -3,12 +3,12 @@ from typing import List
 from math import sqrt
 
 from QFA.GQFA import get_complementary_matrix, check_transition_matrices
-from QFA.Automata import Automata
+from QFA.Automaton import Automaton
 
 State = (np.ndarray, float, float)
 
 
-class MM_1QFA(Automata):
+class MM_1QFA(Automaton):
 
     def __init__(self, alphabet: str,
                  initial_state: np.ndarray,

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Automata(ABC):
+class Automaton(ABC):
 
     @abstractmethod
     def process(self, word: str) -> (float, float):

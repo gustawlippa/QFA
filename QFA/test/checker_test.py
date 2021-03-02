@@ -7,7 +7,7 @@ class LanguageCheckerTest(unittest.TestCase):
         gqfa = GQFA.example()
         gqfa_checker = Checker.LanguageChecker(gqfa, ["aa", "aaa"], ["a"])
 
-        self.assertEqual(gqfa_checker.automata, gqfa)
+        self.assertEqual(gqfa_checker.automaton, gqfa)
         self.assertEqual(gqfa_checker.language, ["aa", "aaa"])
         self.assertEqual(gqfa_checker.not_in_language, ["a"])
 

@@ -1,10 +1,10 @@
 import numpy as np
 from typing import List
 
-from QFA.Automata import Automata
+from QFA.Automaton import Automaton
 
 
-class PFA(Automata):
+class PFA(Automaton):
     def __init__(self, alphabet: str,
                  initial_state: np.ndarray,
                  transition_matrices: List[np.ndarray],

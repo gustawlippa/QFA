@@ -2,7 +2,7 @@ import numpy as np
 from typing import List
 from math import sqrt
 
-from QFA.Automata import Automata
+from QFA.Automaton import Automaton
 
 State = (np.ndarray, float, float)
 
@@ -41,7 +41,7 @@ def check_transition_matrices(matrices: List[np.ndarray]) -> List[np.ndarray]:
         raise Exception('Transition matrix is not unitary')
 
 
-class GQFA(Automata):
+class GQFA(Automaton):
 
     def __init__(self,
                  alphabet: str,
