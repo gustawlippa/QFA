@@ -1,19 +1,20 @@
 import unittest
-from QFA import LanguageChecker as Checker, GQFA
+from qfa.examples import GQFA_example
+from qfa.utils import LanguageChecker as Checker
 
 
 class LanguageCheckerTest(unittest.TestCase):
     def test_init(self):
-        gqfa = GQFA.example()
-        gqfa_checker = Checker.LanguageChecker(gqfa, ["aa", "aaa"], ["a"])
+        gqfa = GQFA_example()
+        gqfa_checker = Checker(gqfa, ["aa", "aaa"], ["a"])
 
         self.assertEqual(gqfa_checker.automaton, gqfa)
         self.assertEqual(gqfa_checker.language, ["aa", "aaa"])
         self.assertEqual(gqfa_checker.not_in_language, ["a"])
 
     def test_gqfa_check(self):
-        gqfa = GQFA.example()
-        gqfa_checker = Checker.LanguageChecker(gqfa, ["aa", "aaa"], ["a"])
+        gqfa = GQFA_example()
+        gqfa_checker = Checker(gqfa, ["aa", "aaa"], ["a"])
         gqfa_checker.check_language()
 
         self.assertIn('cutpoint', gqfa_checker.accepted)

@@ -1,5 +1,5 @@
 import unittest
-from QFA import MO_1QFA as MO
+from qfa.automata import MO_1QFA as MO
 import numpy as np
 from math import sqrt, cos, sin, pi
 
@@ -13,7 +13,7 @@ class MO1QFATest(unittest.TestCase):
         initial_state = np.array([[1], [0]])
         measurement = np.array([[0, 0], [0, 1]])
 
-        qfa = MO.MO_1QFA(alphabet, initial_state, [a_matrix], measurement)
+        qfa = MO(alphabet, initial_state, [a_matrix], measurement)
 
         prob_a, err_a = qfa.process('a')
         if err_a == 0:
@@ -35,7 +35,7 @@ class MO1QFATest(unittest.TestCase):
 
         initial_state = np.array([[1], [0]])
 
-        qfa = MO.MO_1QFA(alphabet, initial_state, [zero_matrix, one_matrix], projection_matrix)
+        qfa = MO(alphabet, initial_state, [zero_matrix, one_matrix], projection_matrix)
         # should behave as DFA expecting words with even number of '0's
 
         p_111, e_111 = qfa.process('111')
@@ -59,7 +59,7 @@ class MO1QFATest(unittest.TestCase):
 
         initial_state = np.array([[1 / 2 + 1j / 2], [1 / (2 * sqrt(2)) + 1j / (2 * sqrt(2))]])
 
-        qfa = MO.MO_1QFA(alphabet, initial_state, [zero_matrix, one_matrix], projection_matrix)
+        qfa = MO(alphabet, initial_state, [zero_matrix, one_matrix], projection_matrix)
         # one must remember that initial state must be a quantum state, so it must comply with normalisation condition
 
         p_111, e_111 = qfa.process('111')
@@ -86,9 +86,9 @@ class MO1QFATest(unittest.TestCase):
 
         initial_state = np.array([[1], [0]])
 
-        qfa = MO.MO_1QFA(alphabet, initial_state, [a_matrix, end_matrix], projection_matrix)
+        qfa = MO(alphabet, initial_state, [a_matrix, end_matrix], projection_matrix)
 
-        from QFA.LanguageGenerator import LanguageGenerator
+        from qfa.utils import LanguageGenerator
         lg = LanguageGenerator('(aaa)*', 'a')
         l, ln = lg.get_language_sample()
         error = 1**(-15)

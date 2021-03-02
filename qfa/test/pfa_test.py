@@ -1,7 +1,6 @@
 import unittest
-from QFA import PFA
+from qfa.automata import PFA
 import numpy as np
-from math import sqrt
 
 
 class PFATest(unittest.TestCase):
@@ -16,7 +15,7 @@ class PFATest(unittest.TestCase):
         initial_state = np.array([[1, 0, 0]])
         acceptance_vector = np.array([[0], [0], [1]])
 
-        pfa = PFA.PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
+        pfa = PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
 
         p_aa, e_aa = pfa.process('aa')
         p_ab, e_ab = pfa.process('ab')
@@ -33,7 +32,7 @@ class PFATest(unittest.TestCase):
         initial_state = np.array([[1, 0, 0]])
         acceptance_vector = np.array([[0], [0], [1]])
 
-        pfa = PFA.PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
+        pfa = PFA(alphabet, initial_state, transition_matrices, acceptance_vector)
         p_aa, e_aa = pfa.process('aa')
         p_ab, e_ab = pfa.process('ab')
         self.assertAlmostEqual(p_aa, 0.5, delta=e_aa)
@@ -42,4 +41,3 @@ class PFATest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    

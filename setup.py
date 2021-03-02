@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/gustawlippa/qfa",
-    packages=setuptools.find_packages(include=["QFA", "QFA.*"]),
+    packages=setuptools.find_packages(include=["qfa", "qfa.*"]),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

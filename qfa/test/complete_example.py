@@ -1,16 +1,14 @@
 import numpy as np
 from math import sqrt
 
-from QFA.MM_1QFA import MM_1QFA
-from QFA.LanguageGenerator import LanguageGenerator
-from QFA.LanguageChecker import LanguageChecker
-from QFA.Plotter import Plotter
+from qfa.automata import MM_1QFA
+from qfa.utils import LanguageChecker, LanguageGenerator, Plotter
 
 
 def main():
 
     # 71753663.pdf example 2.3.5
-    # Freivalds_9_1.pdf strona 45
+    # Freivalds_9_1.pdf page 45
 
     p = 0.682327803828019
 
