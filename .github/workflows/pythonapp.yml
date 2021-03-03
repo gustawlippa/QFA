@@ -26,11 +26,11 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test manually
       run: |
-        python -m QFA.test.pfa_test
-        python -m QFA.test.mo_1qfa_test
-        python -m QFA.test.mm_1qfa_test
-        python -m QFA.test.gqfa_test
-        python -m QFA.test.generator_test
-        python -m QFA.test.checker_test
+        python -m qfa.test.pfa_test
+        python -m qfa.test.mo_1qfa_test
+        python -m qfa.test.mm_1qfa_test
+        python -m qfa.test.gqfa_test
+        python -m qfa.test.generator_test
+        python -m qfa.test.checker_test
 
 
