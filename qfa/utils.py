@@ -55,7 +55,7 @@ class LanguageChecker:
 
     def check_cutpoint(self):
         cutpoint = 1
-        err = None
+        err = 0
         if not self.lang_results or not self.not_lang_results:
             self.run()
         if not self.lang_results:
@@ -73,7 +73,7 @@ class LanguageChecker:
 
     def check_isolated_cutpoint(self):
         cutpoint_l = 1
-        err = None
+        err = 0
         if not self.lang_results or not self.not_lang_results:
             self.run()
 
@@ -83,7 +83,7 @@ class LanguageChecker:
                 err = err_for_word
 
         cutpoint_not_l = 0
-        err_not_l = None
+        err_not_l = 0
         for (p_for_word, err_for_word) in self.not_lang_results:
             if p_for_word > cutpoint_not_l:
                 cutpoint_not_l = p_for_word
@@ -106,7 +106,7 @@ class LanguageChecker:
             if p_for_word < 1 - err_for_word or p_for_word > 1 + err_for_word:
                 return False
         epsilon = 0
-        error = None
+        error = 0
         for (p_for_word, err_for_word) in self.not_lang_results:
             if p_for_word > epsilon:
                 epsilon = p_for_word
